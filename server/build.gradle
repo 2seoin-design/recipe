@@ -1,0 +1,37 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '4.1.1'
+	id 'io.spring.dependency-management' version '1.1.7'
+}
+
+group = 'com.recipe'
+version = '0.0.1-SNAPSHOT'
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-webmvc'
+	testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
+
+// .env(KEY=VALUE)를 읽어 bootRun 환경변수로 넘긴다. 이미 설정된 시스템 환경변수는 덮어쓰지 않는다.
+tasks.named('bootRun') {
+	def envFile = file('.env')
+	if (envFile.exists()) {
+		envFile.readLines().each { line ->
+			if (line.contains('=') && !line.trim().startsWith('#')) {
+				def (key, value) = line.split('=', 2)
+				if (!System.getenv(key.trim())) {
+					environment(key.trim(), value.trim())
+				}
+			}
+		}
+	}
+}
