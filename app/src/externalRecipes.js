@@ -1,6 +1,6 @@
 import { INGREDIENTS } from './data.js';
 
-const API_BASE = 'http://localhost:8080';
+const API_BASE = 'https://recipe-server-aagb.onrender.com';
 
 function extractMainIngredients(text) {
   // 재료 표기가 자유 서술형이라 쉼표/괄호/공백 등으로 토큰을 나눠 확인한다.
